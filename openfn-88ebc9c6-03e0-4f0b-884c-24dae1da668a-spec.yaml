@@ -15,7 +15,7 @@ workflows:
           // Get started by adding operations from the API reference
           
       Chat-with-Aisha:
-        name: Chat with Aisha Later
+        name: Chat with Aisha
         adaptor: '@openfn/language-common@latest'
         # credential:
         # globals:
