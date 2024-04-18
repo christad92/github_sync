@@ -45,12 +45,6 @@
         }
       },
       "edges": {
-        "webhook->Job-1---Check-if-age-is-over-18-months": {
-          "enabled": true,
-          "id": "7e2d0f5f-20a1-4ca1-9ee7-1ded1b0b18f6",
-          "source_trigger_id": "4372fbbb-f615-4724-84f1-5ace0506b442",
-          "target_job_id": "10e18345-f5f6-45e9-a708-c6191d120abc"
-        },
         "Job-1---Check-if-age-is-over-18-months->Job-2---Convert-data-to-DHIS2-format": {
           "enabled": true,
           "id": "7524c306-7b6f-4d0e-bffb-bfe1216f1bc3",
@@ -64,6 +58,12 @@
           "source_job_id": "98088fb3-78d7-4a51-a375-3e7aa8a62979",
           "condition_type": "on_job_success",
           "target_job_id": "6350980e-40c1-4f5b-a603-c2d9f0791034"
+        },
+        "webhook->Job-1---Check-if-age-is-over-18-months": {
+          "enabled": true,
+          "id": "7e2d0f5f-20a1-4ca1-9ee7-1ded1b0b18f6",
+          "source_trigger_id": "4372fbbb-f615-4724-84f1-5ace0506b442",
+          "target_job_id": "10e18345-f5f6-45e9-a708-c6191d120abc"
         }
       }
     },
@@ -122,19 +122,19 @@
           "condition_type": "on_job_success",
           "target_job_id": "91fd86eb-5cec-446c-9bf2-b958bf2f570b"
         },
-        "testing123->Aggregate-data-based-on-gender": {
-          "enabled": true,
-          "id": "0e2ec8a2-5440-42aa-abd4-bc21abfd88e8",
-          "source_job_id": "91fd86eb-5cec-446c-9bf2-b958bf2f570b",
-          "condition_type": "on_job_success",
-          "target_job_id": "f309dc6b-3728-4ada-802a-1ea0d40e5e3f"
-        },
         "Aggregate-data-based-on-gender->make-a-comment-on-Asana": {
           "enabled": true,
           "id": "7b2ee1de-74b8-4d96-858a-792765492a1c",
           "source_job_id": "f309dc6b-3728-4ada-802a-1ea0d40e5e3f",
           "condition_type": "on_job_success",
           "target_job_id": "64e7d8b5-3858-4598-ab36-f107548c41c8"
+        },
+        "testing123->Aggregate-data-based-on-gender": {
+          "enabled": true,
+          "id": "0e2ec8a2-5440-42aa-abd4-bc21abfd88e8",
+          "source_job_id": "91fd86eb-5cec-446c-9bf2-b958bf2f570b",
+          "condition_type": "on_job_success",
+          "target_job_id": "f309dc6b-3728-4ada-802a-1ea0d40e5e3f"
         }
       }
     },
@@ -245,7 +245,7 @@
       "id": "31789720-39e5-4207-a780-33bccd2cb3fe",
       "name": "OpenMRS Demo",
       "inserted_at": "2024-04-17T13:15:54",
-      "updated_at": "2024-04-17T13:15:54",
+      "updated_at": "2024-04-18T09:16:01",
       "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
       "deleted_at": null,
       "triggers": {
@@ -261,6 +261,12 @@
           "name": "New job",
           "body": "// Get started by adding operations from the API reference\n",
           "adaptor": "@openfn/language-openmrs@latest"
+        },
+        "Chat-with-Aisha": {
+          "id": "de66fe6d-1292-4d38-b202-fb07ff3e52b6",
+          "name": "Chat with Aisha",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
         }
       },
       "edges": {
@@ -270,6 +276,13 @@
           "source_trigger_id": "37951f74-db42-42ab-98d6-cc2cfdd696c5",
           "condition_type": "always",
           "target_job_id": "c214bd3c-b77d-42d8-be57-fa8fe1cfb533"
+        },
+        "New-job->Chat-with-Aisha": {
+          "enabled": true,
+          "id": "d30ed0dc-555f-44c5-a8a2-8c18b4fb266c",
+          "source_job_id": "c214bd3c-b77d-42d8-be57-fa8fe1cfb533",
+          "condition_type": "on_job_success",
+          "target_job_id": "de66fe6d-1292-4d38-b202-fb07ff3e52b6"
         }
       }
     }
