@@ -1,0 +1,290 @@
+{
+  "id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
+  "name": "ayodele-demo",
+  "description": null,
+  "inserted_at": "2024-02-21T14:53:03",
+  "updated_at": "2024-02-21T14:53:03",
+  "scheduled_deletion": null,
+  "dataclip_retention_period": null,
+  "history_retention_period": null,
+  "requires_mfa": false,
+  "retention_policy": "retain_all",
+  "workflows": {
+    "Sample-Workflow": {
+      "id": "afb7813c-ac87-48f7-815a-88aff28a28c2",
+      "name": "Sample Workflow",
+      "inserted_at": "2024-02-21T14:53:03",
+      "updated_at": "2024-04-10T12:59:14",
+      "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
+      "deleted_at": "2024-04-10T12:59:14Z",
+      "triggers": {
+        "webhook": {
+          "enabled": false,
+          "id": "4372fbbb-f615-4724-84f1-5ace0506b442",
+          "type": "webhook"
+        }
+      },
+      "jobs": {
+        "Job-1---Check-if-age-is-over-18-months": {
+          "id": "10e18345-f5f6-45e9-a708-c6191d120abc",
+          "name": "Job 1 - Check if age is over 18 months",
+          "body": "  fn(state => {\n    if (state.data.age_in_months > 18) {\n      console.log('Eligible for program.');\n      return state;\n    }\n    else { throw 'Error, patient ineligible.' }\n  });\n",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "Job-2---Convert-data-to-DHIS2-format": {
+          "id": "98088fb3-78d7-4a51-a375-3e7aa8a62979",
+          "name": "Job 2 - Convert data to DHIS2 format",
+          "body": "  fn(state => {\n    const names = state.data.name.split(' ');\n    return { ...state, names };\n  });\n",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "Job-3---Upload-to-DHIS2": {
+          "id": "6350980e-40c1-4f5b-a603-c2d9f0791034",
+          "name": "Job 3 - Upload to DHIS2",
+          "body": "  create('trackedEntityInstances', {\n    trackedEntityType: 'nEenWmSyUEp', // a person\n    orgUnit: 'DiszpKrYNg8',\n    attributes: [\n      {\n        attribute: 'w75KJ2mc4zz', // attribute id for first name\n        value: state.names[0] // the first name from submission\n      },\n      {\n        attribute: 'zDhUuAYrxNC', // attribute id for last name\n        value: state.names[1] // the last name from submission\n      }\n    ]\n  });\n",
+          "adaptor": "@openfn/language-dhis2@latest"
+        }
+      },
+      "edges": {
+        "Job-1---Check-if-age-is-over-18-months->Job-2---Convert-data-to-DHIS2-format": {
+          "enabled": true,
+          "id": "7524c306-7b6f-4d0e-bffb-bfe1216f1bc3",
+          "source_job_id": "10e18345-f5f6-45e9-a708-c6191d120abc",
+          "condition_type": "on_job_success",
+          "target_job_id": "98088fb3-78d7-4a51-a375-3e7aa8a62979"
+        },
+        "Job-2---Convert-data-to-DHIS2-format->Job-3---Upload-to-DHIS2": {
+          "enabled": true,
+          "id": "5657bec9-fea7-49e7-b8f2-999279b02ac2",
+          "source_job_id": "98088fb3-78d7-4a51-a375-3e7aa8a62979",
+          "condition_type": "on_job_success",
+          "target_job_id": "6350980e-40c1-4f5b-a603-c2d9f0791034"
+        },
+        "webhook->Job-1---Check-if-age-is-over-18-months": {
+          "enabled": true,
+          "id": "7e2d0f5f-20a1-4ca1-9ee7-1ded1b0b18f6",
+          "source_trigger_id": "4372fbbb-f615-4724-84f1-5ace0506b442",
+          "target_job_id": "10e18345-f5f6-45e9-a708-c6191d120abc"
+        }
+      }
+    },
+    "Workflow-1": {
+      "id": "29ba0c78-d5ed-47a6-ae61-e0f813dd0e38",
+      "name": "Workflow 1",
+      "inserted_at": "2024-04-10T13:00:47",
+      "updated_at": "2024-04-15T11:24:29",
+      "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
+      "deleted_at": null,
+      "triggers": {
+        "webhook": {
+          "enabled": true,
+          "id": "e7a29c5f-6bb9-4ded-9401-9c17668c274d",
+          "type": "webhook"
+        }
+      },
+      "jobs": {
+        "Get-data-from-DHIS2": {
+          "id": "3b6c7ae1-3834-4962-9e8b-d538d36b3cdf",
+          "name": "Get data from DHIS2",
+          "body": "// Get started by adding operations from the API reference\nfn(state => {\n return {state}\n})",
+          "adaptor": "@openfn/language-dhis2@latest"
+        },
+        "testing123": {
+          "id": "91fd86eb-5cec-446c-9bf2-b958bf2f570b",
+          "name": "testing123",
+          "body": "// Get started by adding operations from the API reference\nfn(state => {\n  return state\n})",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "Aggregate-data-based-on-gender": {
+          "id": "f309dc6b-3728-4ada-802a-1ea0d40e5e3f",
+          "name": "Aggregate data based on gender",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "make-a-comment-on-Asana": {
+          "id": "64e7d8b5-3858-4598-ab36-f107548c41c8",
+          "name": "make a comment on Asana",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-asana@latest"
+        }
+      },
+      "edges": {
+        "webhook->Get-data-from-DHIS2": {
+          "enabled": true,
+          "id": "a7829c04-d385-4700-bade-de2101414211",
+          "source_trigger_id": "e7a29c5f-6bb9-4ded-9401-9c17668c274d",
+          "condition_type": "always",
+          "target_job_id": "3b6c7ae1-3834-4962-9e8b-d538d36b3cdf"
+        },
+        "Get-data-from-DHIS2->testing123": {
+          "enabled": true,
+          "id": "971cac20-3642-44db-89c2-89c1ea9ef8d3",
+          "source_job_id": "3b6c7ae1-3834-4962-9e8b-d538d36b3cdf",
+          "condition_type": "on_job_success",
+          "target_job_id": "91fd86eb-5cec-446c-9bf2-b958bf2f570b"
+        },
+        "Aggregate-data-based-on-gender->make-a-comment-on-Asana": {
+          "enabled": true,
+          "id": "7b2ee1de-74b8-4d96-858a-792765492a1c",
+          "source_job_id": "f309dc6b-3728-4ada-802a-1ea0d40e5e3f",
+          "condition_type": "on_job_success",
+          "target_job_id": "64e7d8b5-3858-4598-ab36-f107548c41c8"
+        },
+        "testing123->Aggregate-data-based-on-gender": {
+          "enabled": true,
+          "id": "0e2ec8a2-5440-42aa-abd4-bc21abfd88e8",
+          "source_job_id": "91fd86eb-5cec-446c-9bf2-b958bf2f570b",
+          "condition_type": "on_job_success",
+          "target_job_id": "f309dc6b-3728-4ada-802a-1ea0d40e5e3f"
+        }
+      }
+    },
+    "workfflow-2": {
+      "id": "90bb50cb-e7b3-4960-91ec-585d19442346",
+      "name": "workfflow 2",
+      "inserted_at": "2024-04-10T13:44:30",
+      "updated_at": "2024-04-15T12:54:08",
+      "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
+      "deleted_at": null,
+      "triggers": {
+        "webhook": {
+          "enabled": true,
+          "id": "a7c30b46-3d96-4843-a760-dacba3320711",
+          "type": "webhook"
+        }
+      },
+      "jobs": {
+        "Fetch-submissions-from-KoboCollect": {
+          "id": "91dd3496-b63e-4ebb-b700-c040c9798b82",
+          "name": "Fetch submissions from KoboCollect",
+          "body": "// Get started by adding operations from the API reference\nfn(state =>{\n  return state\n})",
+          "adaptor": "@openfn/language-kobotoolbox@latest"
+        },
+        "testing123_": {
+          "id": "e077868b-6a7b-4597-8b28-c26017dd9ae3",
+          "name": "testing123_",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-postgresql@latest"
+        },
+        "Send-a-text-message-to-admin": {
+          "id": "c303fcf1-a9c7-44fe-b551-3893d927f199",
+          "name": "Send a text message to admin",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-twilio@0.3.4"
+        }
+      },
+      "edges": {
+        "webhook->Fetch-submissions-from-KoboCollect": {
+          "enabled": true,
+          "id": "216b37c7-41bd-410c-a4bd-c155eca8a19f",
+          "source_trigger_id": "a7c30b46-3d96-4843-a760-dacba3320711",
+          "condition_type": "always",
+          "target_job_id": "91dd3496-b63e-4ebb-b700-c040c9798b82"
+        },
+        "Fetch-submissions-from-KoboCollect->testing123_": {
+          "enabled": true,
+          "id": "f9820698-babc-456f-a261-608d0a2d574c",
+          "source_job_id": "91dd3496-b63e-4ebb-b700-c040c9798b82",
+          "condition_type": "on_job_success",
+          "target_job_id": "e077868b-6a7b-4597-8b28-c26017dd9ae3"
+        },
+        "testing123_->Send-a-text-message-to-admin": {
+          "enabled": true,
+          "id": "ae729b5a-3a72-4740-8167-29e663a01056",
+          "source_job_id": "e077868b-6a7b-4597-8b28-c26017dd9ae3",
+          "condition_type": "on_job_success",
+          "target_job_id": "c303fcf1-a9c7-44fe-b551-3893d927f199"
+        }
+      }
+    },
+    "Testing": {
+      "id": "f2bf8c50-c243-4939-aaf3-9888c8d65453",
+      "name": "Testing",
+      "inserted_at": "2024-04-15T14:24:00",
+      "updated_at": "2024-04-17T13:12:06",
+      "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
+      "deleted_at": null,
+      "triggers": {
+        "webhook": {
+          "enabled": true,
+          "id": "a12e34df-767e-4355-ab82-d4ae84424050",
+          "type": "webhook"
+        }
+      },
+      "jobs": {
+        "Boboyi": {
+          "id": "98295639-903a-44f2-a8fe-7aa13250f2e4",
+          "name": "Boboyi",
+          "body": "// Get started by adding operations from the API reference\nfn(state => {\n  return state\n})",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "DHIS2-Test": {
+          "id": "e4cc9fea-0201-4c26-b6ac-d34662dcc002",
+          "name": "DHIS2 Test",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-dhis2@latest"
+        }
+      },
+      "edges": {
+        "webhook->Boboyi": {
+          "enabled": true,
+          "id": "d0e43d44-970c-4523-a2da-b32df6fdadee",
+          "source_trigger_id": "a12e34df-767e-4355-ab82-d4ae84424050",
+          "condition_type": "always",
+          "target_job_id": "98295639-903a-44f2-a8fe-7aa13250f2e4"
+        },
+        "Boboyi->DHIS2-Test": {
+          "enabled": true,
+          "id": "f6ba022c-8434-4d17-b8fb-71a805a1fe7e",
+          "source_job_id": "98295639-903a-44f2-a8fe-7aa13250f2e4",
+          "condition_type": "on_job_success",
+          "target_job_id": "e4cc9fea-0201-4c26-b6ac-d34662dcc002"
+        }
+      }
+    },
+    "OpenMRS-Demo": {
+      "id": "31789720-39e5-4207-a780-33bccd2cb3fe",
+      "name": "OpenMRS Demo",
+      "inserted_at": "2024-04-17T13:15:54",
+      "updated_at": "2024-04-18T09:16:01",
+      "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
+      "deleted_at": null,
+      "triggers": {
+        "webhook": {
+          "enabled": true,
+          "id": "37951f74-db42-42ab-98d6-cc2cfdd696c5",
+          "type": "webhook"
+        }
+      },
+      "jobs": {
+        "New-job": {
+          "id": "c214bd3c-b77d-42d8-be57-fa8fe1cfb533",
+          "name": "New job",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-openmrs@latest"
+        },
+        "Chat-with-Aisha": {
+          "id": "de66fe6d-1292-4d38-b202-fb07ff3e52b6",
+          "name": "Chat with Aisha",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
+        }
+      },
+      "edges": {
+        "webhook->New-job": {
+          "enabled": true,
+          "id": "910e0bae-101f-428c-8624-5d37f122ac43",
+          "source_trigger_id": "37951f74-db42-42ab-98d6-cc2cfdd696c5",
+          "condition_type": "always",
+          "target_job_id": "c214bd3c-b77d-42d8-be57-fa8fe1cfb533"
+        },
+        "New-job->Chat-with-Aisha": {
+          "enabled": true,
+          "id": "d30ed0dc-555f-44c5-a8a2-8c18b4fb266c",
+          "source_job_id": "c214bd3c-b77d-42d8-be57-fa8fe1cfb533",
+          "condition_type": "on_job_success",
+          "target_job_id": "de66fe6d-1292-4d38-b202-fb07ff3e52b6"
+        }
+      }
+    }
+  }
+}
