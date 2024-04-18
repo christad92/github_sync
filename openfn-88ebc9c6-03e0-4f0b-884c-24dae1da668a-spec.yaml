@@ -13,6 +13,7 @@ workflows:
         # globals:
         body: |
           // Get started by adding operations from the API reference
+          fn(state => return {...state})
           
       Chat-with-Aisha:
         name: Chat with Aisha
