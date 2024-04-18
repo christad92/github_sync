@@ -10,63 +10,6 @@
   "requires_mfa": false,
   "retention_policy": "retain_all",
   "workflows": {
-    "Sample-Workflow": {
-      "id": "afb7813c-ac87-48f7-815a-88aff28a28c2",
-      "name": "Sample Workflow",
-      "inserted_at": "2024-02-21T14:53:03",
-      "updated_at": "2024-04-10T12:59:14",
-      "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
-      "deleted_at": "2024-04-10T12:59:14Z",
-      "triggers": {
-        "webhook": {
-          "enabled": false,
-          "id": "4372fbbb-f615-4724-84f1-5ace0506b442",
-          "type": "webhook"
-        }
-      },
-      "jobs": {
-        "Job-1---Check-if-age-is-over-18-months": {
-          "id": "10e18345-f5f6-45e9-a708-c6191d120abc",
-          "name": "Job 1 - Check if age is over 18 months",
-          "body": "  fn(state => {\n    if (state.data.age_in_months > 18) {\n      console.log('Eligible for program.');\n      return state;\n    }\n    else { throw 'Error, patient ineligible.' }\n  });\n",
-          "adaptor": "@openfn/language-common@latest"
-        },
-        "Job-2---Convert-data-to-DHIS2-format": {
-          "id": "98088fb3-78d7-4a51-a375-3e7aa8a62979",
-          "name": "Job 2 - Convert data to DHIS2 format",
-          "body": "  fn(state => {\n    const names = state.data.name.split(' ');\n    return { ...state, names };\n  });\n",
-          "adaptor": "@openfn/language-common@latest"
-        },
-        "Job-3---Upload-to-DHIS2": {
-          "id": "6350980e-40c1-4f5b-a603-c2d9f0791034",
-          "name": "Job 3 - Upload to DHIS2",
-          "body": "  create('trackedEntityInstances', {\n    trackedEntityType: 'nEenWmSyUEp', // a person\n    orgUnit: 'DiszpKrYNg8',\n    attributes: [\n      {\n        attribute: 'w75KJ2mc4zz', // attribute id for first name\n        value: state.names[0] // the first name from submission\n      },\n      {\n        attribute: 'zDhUuAYrxNC', // attribute id for last name\n        value: state.names[1] // the last name from submission\n      }\n    ]\n  });\n",
-          "adaptor": "@openfn/language-dhis2@latest"
-        }
-      },
-      "edges": {
-        "Job-1---Check-if-age-is-over-18-months->Job-2---Convert-data-to-DHIS2-format": {
-          "enabled": true,
-          "id": "7524c306-7b6f-4d0e-bffb-bfe1216f1bc3",
-          "source_job_id": "10e18345-f5f6-45e9-a708-c6191d120abc",
-          "condition_type": "on_job_success",
-          "target_job_id": "98088fb3-78d7-4a51-a375-3e7aa8a62979"
-        },
-        "Job-2---Convert-data-to-DHIS2-format->Job-3---Upload-to-DHIS2": {
-          "enabled": true,
-          "id": "5657bec9-fea7-49e7-b8f2-999279b02ac2",
-          "source_job_id": "98088fb3-78d7-4a51-a375-3e7aa8a62979",
-          "condition_type": "on_job_success",
-          "target_job_id": "6350980e-40c1-4f5b-a603-c2d9f0791034"
-        },
-        "webhook->Job-1---Check-if-age-is-over-18-months": {
-          "enabled": true,
-          "id": "7e2d0f5f-20a1-4ca1-9ee7-1ded1b0b18f6",
-          "source_trigger_id": "4372fbbb-f615-4724-84f1-5ace0506b442",
-          "target_job_id": "10e18345-f5f6-45e9-a708-c6191d120abc"
-        }
-      }
-    },
     "Workflow-1": {
       "id": "29ba0c78-d5ed-47a6-ae61-e0f813dd0e38",
       "name": "Workflow 1",
