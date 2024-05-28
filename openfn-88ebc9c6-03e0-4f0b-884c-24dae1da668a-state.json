@@ -3,80 +3,24 @@
   "name": "ayodele-demo",
   "description": null,
   "inserted_at": "2024-02-21T14:53:03",
-  "updated_at": "2024-02-21T14:53:03",
+  "updated_at": "2024-05-13T06:37:17",
   "scheduled_deletion": null,
   "dataclip_retention_period": null,
   "history_retention_period": null,
   "requires_mfa": false,
   "retention_policy": "retain_all",
   "workflows": {
-    "Sample-Workflow": {
-      "id": "afb7813c-ac87-48f7-815a-88aff28a28c2",
-      "name": "Sample Workflow",
-      "inserted_at": "2024-02-21T14:53:03",
-      "updated_at": "2024-04-10T12:59:14",
-      "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
-      "deleted_at": "2024-04-10T12:59:14Z",
-      "triggers": {
-        "webhook": {
-          "enabled": false,
-          "id": "4372fbbb-f615-4724-84f1-5ace0506b442",
-          "type": "webhook"
-        }
-      },
-      "jobs": {
-        "Job-1---Check-if-age-is-over-18-months": {
-          "id": "10e18345-f5f6-45e9-a708-c6191d120abc",
-          "name": "Job 1 - Check if age is over 18 months",
-          "body": "  fn(state => {\n    if (state.data.age_in_months > 18) {\n      console.log('Eligible for program.');\n      return state;\n    }\n    else { throw 'Error, patient ineligible.' }\n  });\n",
-          "adaptor": "@openfn/language-common@latest"
-        },
-        "Job-2---Convert-data-to-DHIS2-format": {
-          "id": "98088fb3-78d7-4a51-a375-3e7aa8a62979",
-          "name": "Job 2 - Convert data to DHIS2 format",
-          "body": "  fn(state => {\n    const names = state.data.name.split(' ');\n    return { ...state, names };\n  });\n",
-          "adaptor": "@openfn/language-common@latest"
-        },
-        "Job-3---Upload-to-DHIS2": {
-          "id": "6350980e-40c1-4f5b-a603-c2d9f0791034",
-          "name": "Job 3 - Upload to DHIS2",
-          "body": "  create('trackedEntityInstances', {\n    trackedEntityType: 'nEenWmSyUEp', // a person\n    orgUnit: 'DiszpKrYNg8',\n    attributes: [\n      {\n        attribute: 'w75KJ2mc4zz', // attribute id for first name\n        value: state.names[0] // the first name from submission\n      },\n      {\n        attribute: 'zDhUuAYrxNC', // attribute id for last name\n        value: state.names[1] // the last name from submission\n      }\n    ]\n  });\n",
-          "adaptor": "@openfn/language-dhis2@latest"
-        }
-      },
-      "edges": {
-        "Job-1---Check-if-age-is-over-18-months->Job-2---Convert-data-to-DHIS2-format": {
-          "enabled": true,
-          "id": "7524c306-7b6f-4d0e-bffb-bfe1216f1bc3",
-          "source_job_id": "10e18345-f5f6-45e9-a708-c6191d120abc",
-          "condition_type": "on_job_success",
-          "target_job_id": "98088fb3-78d7-4a51-a375-3e7aa8a62979"
-        },
-        "Job-2---Convert-data-to-DHIS2-format->Job-3---Upload-to-DHIS2": {
-          "enabled": true,
-          "id": "5657bec9-fea7-49e7-b8f2-999279b02ac2",
-          "source_job_id": "98088fb3-78d7-4a51-a375-3e7aa8a62979",
-          "condition_type": "on_job_success",
-          "target_job_id": "6350980e-40c1-4f5b-a603-c2d9f0791034"
-        },
-        "webhook->Job-1---Check-if-age-is-over-18-months": {
-          "enabled": true,
-          "id": "7e2d0f5f-20a1-4ca1-9ee7-1ded1b0b18f6",
-          "source_trigger_id": "4372fbbb-f615-4724-84f1-5ace0506b442",
-          "target_job_id": "10e18345-f5f6-45e9-a708-c6191d120abc"
-        }
-      }
-    },
     "Workflow-1": {
       "id": "29ba0c78-d5ed-47a6-ae61-e0f813dd0e38",
       "name": "Workflow 1",
-      "inserted_at": "2024-04-10T13:00:47",
-      "updated_at": "2024-04-15T11:24:29",
+      "inserted_at": "2024-04-10T13:00:47Z",
+      "updated_at": "2024-04-30T15:49:39Z",
       "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
       "deleted_at": null,
+      "lock_version": 1,
       "triggers": {
         "webhook": {
-          "enabled": true,
+          "enabled": false,
           "id": "e7a29c5f-6bb9-4ded-9401-9c17668c274d",
           "type": "webhook"
         }
@@ -122,32 +66,33 @@
           "condition_type": "on_job_success",
           "target_job_id": "91fd86eb-5cec-446c-9bf2-b958bf2f570b"
         },
-        "Aggregate-data-based-on-gender->make-a-comment-on-Asana": {
-          "enabled": true,
-          "id": "7b2ee1de-74b8-4d96-858a-792765492a1c",
-          "source_job_id": "f309dc6b-3728-4ada-802a-1ea0d40e5e3f",
-          "condition_type": "on_job_success",
-          "target_job_id": "64e7d8b5-3858-4598-ab36-f107548c41c8"
-        },
         "testing123->Aggregate-data-based-on-gender": {
           "enabled": true,
           "id": "0e2ec8a2-5440-42aa-abd4-bc21abfd88e8",
           "source_job_id": "91fd86eb-5cec-446c-9bf2-b958bf2f570b",
           "condition_type": "on_job_success",
           "target_job_id": "f309dc6b-3728-4ada-802a-1ea0d40e5e3f"
+        },
+        "Aggregate-data-based-on-gender->make-a-comment-on-Asana": {
+          "enabled": true,
+          "id": "7b2ee1de-74b8-4d96-858a-792765492a1c",
+          "source_job_id": "f309dc6b-3728-4ada-802a-1ea0d40e5e3f",
+          "condition_type": "on_job_success",
+          "target_job_id": "64e7d8b5-3858-4598-ab36-f107548c41c8"
         }
       }
     },
     "workfflow-2": {
       "id": "90bb50cb-e7b3-4960-91ec-585d19442346",
       "name": "workfflow 2",
-      "inserted_at": "2024-04-10T13:44:30",
-      "updated_at": "2024-04-15T12:54:08",
+      "inserted_at": "2024-04-10T13:44:30Z",
+      "updated_at": "2024-04-30T15:49:31Z",
       "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
       "deleted_at": null,
+      "lock_version": 1,
       "triggers": {
         "webhook": {
-          "enabled": true,
+          "enabled": false,
           "id": "a7c30b46-3d96-4843-a760-dacba3320711",
           "type": "webhook"
         }
@@ -199,13 +144,14 @@
     "Testing": {
       "id": "f2bf8c50-c243-4939-aaf3-9888c8d65453",
       "name": "Testing",
-      "inserted_at": "2024-04-15T14:24:00",
-      "updated_at": "2024-04-17T13:12:06",
+      "inserted_at": "2024-04-15T14:24:00Z",
+      "updated_at": "2024-04-30T15:49:24Z",
       "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
       "deleted_at": null,
+      "lock_version": 1,
       "triggers": {
         "webhook": {
-          "enabled": true,
+          "enabled": false,
           "id": "a12e34df-767e-4355-ab82-d4ae84424050",
           "type": "webhook"
         }
@@ -244,10 +190,11 @@
     "OpenMRS-Demo": {
       "id": "31789720-39e5-4207-a780-33bccd2cb3fe",
       "name": "OpenMRS Demo",
-      "inserted_at": "2024-04-17T13:15:54",
-      "updated_at": "2024-04-18T09:16:01",
+      "inserted_at": "2024-04-17T13:15:54Z",
+      "updated_at": "2024-04-30T16:05:15Z",
       "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
       "deleted_at": null,
+      "lock_version": 2,
       "triggers": {
         "webhook": {
           "enabled": true,
@@ -283,6 +230,239 @@
           "source_job_id": "c214bd3c-b77d-42d8-be57-fa8fe1cfb533",
           "condition_type": "on_job_success",
           "target_job_id": "de66fe6d-1292-4d38-b202-fb07ff3e52b6"
+        }
+      }
+    },
+    "BVIHSA-Demo": {
+      "id": "7a0fc397-88b0-4b0f-b10c-c2157a6f3c93",
+      "name": "BVIHSA Demo",
+      "inserted_at": "2024-04-29T10:34:44Z",
+      "updated_at": "2024-05-24T09:40:59Z",
+      "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
+      "deleted_at": null,
+      "lock_version": 6,
+      "triggers": {
+        "webhook": {
+          "enabled": true,
+          "id": "fad0a9f7-99bd-49a7-a956-e8a187e5a01f",
+          "type": "webhook"
+        }
+      },
+      "jobs": {
+        "get-Formio-Data": {
+          "id": "de1a1559-bbc8-4602-8711-3bbafda9f4ba",
+          "name": "get Formio Data",
+          "body": "// Get started by adding operations from the API reference\nfn(state => {\n  return state\n})",
+          "adaptor": "@openfn/language-http@latest"
+        },
+        "Push-to-OpenSPP": {
+          "id": "d42baca3-7355-4f56-b377-e926ba606177",
+          "name": "Push to OpenSPP",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-openspp@latest"
+        },
+        "Send-to-slack": {
+          "id": "62aaf222-a207-463c-866d-77937e8a000e",
+          "name": "Send to slack",
+          "body": "// Get started by adding operations from the API reference\n(state) => console.log(state.data)",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "jsk": {
+          "id": "ccdfa1a6-0e62-4c64-9d94-ec5c93a95dcf",
+          "name": "jsk",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
+        }
+      },
+      "edges": {
+        "webhook->get-Formio-Data": {
+          "enabled": true,
+          "id": "d9343bc3-2093-41d7-8132-1850e392969c",
+          "source_trigger_id": "fad0a9f7-99bd-49a7-a956-e8a187e5a01f",
+          "condition_type": "js_expression",
+          "condition_expression": "state.data.sender === \"dimitri\"",
+          "condition_label": "Data is sent by dimitri",
+          "target_job_id": "de1a1559-bbc8-4602-8711-3bbafda9f4ba"
+        },
+        "get-Formio-Data->Push-to-OpenSPP": {
+          "enabled": true,
+          "id": "dfe04864-2b8f-4a68-be81-79f0e6aeb29a",
+          "source_job_id": "de1a1559-bbc8-4602-8711-3bbafda9f4ba",
+          "condition_type": "on_job_success",
+          "target_job_id": "d42baca3-7355-4f56-b377-e926ba606177"
+        },
+        "get-Formio-Data->Send-to-slack": {
+          "enabled": true,
+          "id": "cfd31646-0dcc-43d5-9e00-3d987834ecad",
+          "source_job_id": "de1a1559-bbc8-4602-8711-3bbafda9f4ba",
+          "condition_type": "js_expression",
+          "condition_expression": "state.data.age_month <= 5",
+          "condition_label": "Children under 5",
+          "target_job_id": "62aaf222-a207-463c-866d-77937e8a000e"
+        },
+        "Send-to-slack->jsk": {
+          "enabled": true,
+          "id": "4af6acb0-1d01-436a-a547-8cb01da4298d",
+          "source_job_id": "62aaf222-a207-463c-866d-77937e8a000e",
+          "condition_type": "on_job_success",
+          "target_job_id": "ccdfa1a6-0e62-4c64-9d94-ec5c93a95dcf"
+        }
+      }
+    },
+    "GAIN-Demo": {
+      "id": "f4e71e8d-1d30-4779-815d-32944f8fe796",
+      "name": "GAIN Demo",
+      "inserted_at": "2024-04-30T08:38:51Z",
+      "updated_at": "2024-04-30T15:59:18Z",
+      "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
+      "deleted_at": null,
+      "lock_version": 2,
+      "triggers": {
+        "webhook": {
+          "enabled": true,
+          "id": "245b7e21-2499-4fdb-a07e-f2719549ba55",
+          "type": "webhook"
+        }
+      },
+      "jobs": {
+        "Manipulate-data-from-SurveyCTO": {
+          "id": "d4431fec-e4c1-4693-9957-72fd0245eef3",
+          "name": "Manipulate data from SurveyCTO",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "Send-data-to-Zoho": {
+          "id": "373aa0c0-1155-4999-ac35-718273c9968f",
+          "name": "Send data to Zoho",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-zoho@latest"
+        },
+        "Send-to-slack": {
+          "id": "e6d9a394-a4d1-4d25-a31a-81721e2a228f",
+          "name": "Send to slack",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "Send-a-text-message": {
+          "id": "eff14cdf-ec58-4aaa-b850-d8b5ef61f173",
+          "name": "Send a text message",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "Add-to-GoogleSheets": {
+          "id": "284068ad-d422-4cc6-a343-a7119cb377d4",
+          "name": "Add to GoogleSheets",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "Add-to-salesforce": {
+          "id": "09883f37-71ad-4184-b710-6c51bca434a7",
+          "name": "Add to salesforce",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "Get-updates-from-Zoho": {
+          "id": "769034b6-06a0-44ec-9d3f-80e36547a8bf",
+          "name": "Get updates from Zoho",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-zoho@latest"
+        }
+      },
+      "edges": {
+        "webhook->Manipulate-data-from-SurveyCTO": {
+          "enabled": true,
+          "id": "fce6d123-6fb8-4fe6-9669-b8df25e45123",
+          "source_trigger_id": "245b7e21-2499-4fdb-a07e-f2719549ba55",
+          "condition_type": "always",
+          "target_job_id": "d4431fec-e4c1-4693-9957-72fd0245eef3"
+        },
+        "Manipulate-data-from-SurveyCTO->Send-data-to-Zoho": {
+          "enabled": true,
+          "id": "a07603c3-1fe6-4341-bcf6-6c2efb30731c",
+          "source_job_id": "d4431fec-e4c1-4693-9957-72fd0245eef3",
+          "condition_type": "on_job_success",
+          "target_job_id": "373aa0c0-1155-4999-ac35-718273c9968f"
+        },
+        "Manipulate-data-from-SurveyCTO->Send-to-slack": {
+          "enabled": true,
+          "id": "8c2836f5-64de-41c0-a971-746a4c467a6e",
+          "source_job_id": "d4431fec-e4c1-4693-9957-72fd0245eef3",
+          "condition_type": "on_job_success",
+          "target_job_id": "e6d9a394-a4d1-4d25-a31a-81721e2a228f"
+        },
+        "Manipulate-data-from-SurveyCTO->Send-a-text-message": {
+          "enabled": true,
+          "id": "4496b191-2c52-4ce4-aa03-ed41c6fe4623",
+          "source_job_id": "d4431fec-e4c1-4693-9957-72fd0245eef3",
+          "condition_type": "on_job_success",
+          "target_job_id": "eff14cdf-ec58-4aaa-b850-d8b5ef61f173"
+        },
+        "Manipulate-data-from-SurveyCTO->Add-to-GoogleSheets": {
+          "enabled": true,
+          "id": "16dca0c4-5db4-4e17-b5f6-6442978bb798",
+          "source_job_id": "d4431fec-e4c1-4693-9957-72fd0245eef3",
+          "condition_type": "on_job_success",
+          "target_job_id": "284068ad-d422-4cc6-a343-a7119cb377d4"
+        },
+        "Manipulate-data-from-SurveyCTO->Add-to-salesforce": {
+          "enabled": true,
+          "id": "5339551a-61f9-4753-9625-459f1316b87d",
+          "source_job_id": "d4431fec-e4c1-4693-9957-72fd0245eef3",
+          "condition_type": "on_job_success",
+          "target_job_id": "09883f37-71ad-4184-b710-6c51bca434a7"
+        },
+        "Send-data-to-Zoho->Get-updates-from-Zoho": {
+          "enabled": true,
+          "id": "1a0ecfd6-cd0c-462e-acd3-0204d4ad9d01",
+          "source_job_id": "373aa0c0-1155-4999-ac35-718273c9968f",
+          "condition_type": "on_job_success",
+          "target_job_id": "769034b6-06a0-44ec-9d3f-80e36547a8bf"
+        }
+      }
+    },
+    "Test-Crash-": {
+      "id": "95f4da62-2760-46f5-8df5-4999dbdb36e4",
+      "name": "Test Crash ",
+      "inserted_at": "2024-05-01T00:32:27Z",
+      "updated_at": "2024-05-01T00:32:27Z",
+      "project_id": "88ebc9c6-03e0-4f0b-884c-24dae1da668a",
+      "deleted_at": null,
+      "lock_version": 1,
+      "triggers": {
+        "webhook": {
+          "enabled": true,
+          "id": "c5905384-85c9-499f-af8f-5220a3a66ca6",
+          "type": "webhook"
+        }
+      },
+      "jobs": {
+        "New-job": {
+          "id": "f533a6cb-8788-43ac-83e0-778bce6efd52",
+          "name": "New job",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
+        },
+        "hjs": {
+          "id": "ca389780-2aa6-478d-9fa7-028d0945b600",
+          "name": "hjs",
+          "body": "// Get started by adding operations from the API reference\n",
+          "adaptor": "@openfn/language-common@latest"
+        }
+      },
+      "edges": {
+        "New-job->hjs": {
+          "enabled": true,
+          "id": "811270fe-5bb5-428a-8715-27340bf55167",
+          "source_job_id": "f533a6cb-8788-43ac-83e0-778bce6efd52",
+          "condition_type": "on_job_success",
+          "target_job_id": "ca389780-2aa6-478d-9fa7-028d0945b600"
+        },
+        "webhook->New-job": {
+          "enabled": true,
+          "id": "64349a48-b94f-4bb1-98a7-720faedd6b2a",
+          "source_trigger_id": "c5905384-85c9-499f-af8f-5220a3a66ca6",
+          "condition_type": "always",
+          "target_job_id": "f533a6cb-8788-43ac-83e0-778bce6efd52"
         }
       }
     }

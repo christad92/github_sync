@@ -3,6 +3,171 @@ name: ayodele-demo
 # credentials:
 # globals:
 workflows:
+  BVIHSA-Demo:
+    name: BVIHSA Demo
+    jobs:
+      get-Formio-Data:
+        name: get Formio Data
+        adaptor: '@openfn/language-http@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          fn(state => {
+            return state
+          })
+      Push-to-OpenSPP:
+        name: Push to OpenSPP
+        adaptor: '@openfn/language-openspp@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+      Send-to-slack:
+        name: Send to slack
+        adaptor: '@openfn/language-common@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          (state) => console.log(state.data)
+      jsk:
+        name: jsk
+        adaptor: '@openfn/language-common@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+    triggers:
+      webhook:
+        type: webhook
+        enabled: true
+    edges:
+      webhook->get-Formio-Data:
+        source_trigger: webhook
+        target_job: get-Formio-Data
+        condition_type: js_expression
+        condition_label: Data is sent by dimitri
+        condition_expression: state.data.sender === "dimitri"
+        enabled: true
+      get-Formio-Data->Push-to-OpenSPP:
+        source_job: get-Formio-Data
+        target_job: Push-to-OpenSPP
+        condition_type: on_job_success
+        enabled: true
+      get-Formio-Data->Send-to-slack:
+        source_job: get-Formio-Data
+        target_job: Send-to-slack
+        condition_type: js_expression
+        condition_label: Children under 5
+        condition_expression: state.data.age_month <= 5
+        enabled: true
+      Send-to-slack->jsk:
+        source_job: Send-to-slack
+        target_job: jsk
+        condition_type: on_job_success
+        enabled: true
+  GAIN-Demo:
+    name: GAIN Demo
+    jobs:
+      Manipulate-data-from-SurveyCTO:
+        name: Manipulate data from SurveyCTO
+        adaptor: '@openfn/language-common@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+      Send-data-to-Zoho:
+        name: Send data to Zoho
+        adaptor: '@openfn/language-zoho@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+      Send-to-slack:
+        name: Send to slack
+        adaptor: '@openfn/language-common@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+      Send-a-text-message:
+        name: Send a text message
+        adaptor: '@openfn/language-common@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+      Add-to-GoogleSheets:
+        name: Add to GoogleSheets
+        adaptor: '@openfn/language-common@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+      Add-to-salesforce:
+        name: Add to salesforce
+        adaptor: '@openfn/language-common@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+      Get-updates-from-Zoho:
+        name: Get updates from Zoho
+        adaptor: '@openfn/language-zoho@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+    triggers:
+      webhook:
+        type: webhook
+        enabled: true
+    edges:
+      webhook->Manipulate-data-from-SurveyCTO:
+        source_trigger: webhook
+        target_job: Manipulate-data-from-SurveyCTO
+        condition_type: always
+        enabled: true
+      Manipulate-data-from-SurveyCTO->Send-data-to-Zoho:
+        source_job: Manipulate-data-from-SurveyCTO
+        target_job: Send-data-to-Zoho
+        condition_type: on_job_success
+        enabled: true
+      Manipulate-data-from-SurveyCTO->Send-to-slack:
+        source_job: Manipulate-data-from-SurveyCTO
+        target_job: Send-to-slack
+        condition_type: on_job_success
+        enabled: true
+      Manipulate-data-from-SurveyCTO->Send-a-text-message:
+        source_job: Manipulate-data-from-SurveyCTO
+        target_job: Send-a-text-message
+        condition_type: on_job_success
+        enabled: true
+      Manipulate-data-from-SurveyCTO->Add-to-GoogleSheets:
+        source_job: Manipulate-data-from-SurveyCTO
+        target_job: Add-to-GoogleSheets
+        condition_type: on_job_success
+        enabled: true
+      Manipulate-data-from-SurveyCTO->Add-to-salesforce:
+        source_job: Manipulate-data-from-SurveyCTO
+        target_job: Add-to-salesforce
+        condition_type: on_job_success
+        enabled: true
+      Send-data-to-Zoho->Get-updates-from-Zoho:
+        source_job: Send-data-to-Zoho
+        target_job: Get-updates-from-Zoho
+        condition_type: on_job_success
+        enabled: true
   OpenMRS-Demo:
     name: OpenMRS Demo
     jobs:
@@ -37,6 +202,40 @@ workflows:
         target_job: Chat-with-Aisha
         condition_type: on_job_success
         enabled: true
+  Test-Crash-:
+    name: Test Crash 
+    jobs:
+      New-job:
+        name: New job
+        adaptor: '@openfn/language-common@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+      hjs:
+        name: hjs
+        adaptor: '@openfn/language-common@latest'
+        # credential:
+        # globals:
+        body: |
+          // Get started by adding operations from the API reference
+          
+    triggers:
+      webhook:
+        type: webhook
+        enabled: true
+    edges:
+      New-job->hjs:
+        source_job: New-job
+        target_job: hjs
+        condition_type: on_job_success
+        enabled: true
+      webhook->New-job:
+        source_trigger: webhook
+        target_job: New-job
+        condition_type: always
+        enabled: true
   Testing:
     name: Testing
     jobs:
@@ -48,7 +247,6 @@ workflows:
         body: |
           // Get started by adding operations from the API reference
           fn(state => {
-          //say my name
             return state
           })
       DHIS2-Test:
@@ -62,7 +260,7 @@ workflows:
     triggers:
       webhook:
         type: webhook
-        enabled: true
+        enabled: false
     edges:
       webhook->Boboyi:
         source_trigger: webhook
@@ -116,7 +314,7 @@ workflows:
     triggers:
       webhook:
         type: webhook
-        enabled: true
+        enabled: false
     edges:
       webhook->Get-data-from-DHIS2:
         source_trigger: webhook
@@ -170,7 +368,7 @@ workflows:
     triggers:
       webhook:
         type: webhook
-        enabled: true
+        enabled: false
     edges:
       webhook->Fetch-submissions-from-KoboCollect:
         source_trigger: webhook
